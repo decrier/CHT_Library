@@ -60,7 +60,7 @@ public class LoanService {
         Book book = bookRepo.findById(loan.getBookId())
                 .orElseThrow(() -> new IllegalArgumentException("book not found for loan id=" + loanId));
         if (book.getCopiesAvailable() >= book.getCopiesTotal()) {
-            throw new IllegalArgumentException("copiesAvailable alreaedy at max for book id=" + book.getId());
+            throw new IllegalArgumentException("copiesAvailable already at max for book id=" + book.getId());
         }
         book.setCopiesAvailable(book.getCopiesAvailable() + 1);
         bookRepo.save(book);
