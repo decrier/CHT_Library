@@ -67,7 +67,7 @@ public class CatalogServiceTest {
         var service = new CatalogService(repo);
 
         Book b = service.addBook("111-1", "Clean Code", "Robert C. Martin", 2008, 2);
-        assertEquals(1, service.listAll().get(0).getCopiesAvailable());
+        assertEquals(2, service.listAll().get(0).getCopiesAvailable());
 
         // выдаем один экз
         assertTrue(service.loan(1));
