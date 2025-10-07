@@ -1,9 +1,6 @@
 package com.example.library.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class JdbcDemo {
     public static void main(String[] args) throws SQLException {
@@ -21,6 +18,17 @@ public class JdbcDemo {
             // вставляем запись
             st.executeUpdate("INSERT INTO books (isbn, title, author) VALUES " +
                     "('111', 'Clean Code', 'Robert Martin')");
+
+            // читаем и выводим
+            try (ResultSet rs = st.executeQuery("SELECT id, isbn, title, author FROM books")){
+                while (rs.next()) {
+                    System.out.printf("Book #%d: %s - %s (%s)%n",
+                            rs.getLong("id"),
+                            rs.getString("title"),
+                            rs.getString("author"),
+                            rs.getString("isbn"));
+                }
+            }
         }
     }
 }
