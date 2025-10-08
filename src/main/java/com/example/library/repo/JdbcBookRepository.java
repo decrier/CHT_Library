@@ -27,7 +27,7 @@ public class JdbcBookRepository implements BookRepository {
             ps.setString(1, book.getIsbn());
             ps.setString(2, book.getTitle());
             ps.setString(3, book.getAuthor());
-            ps.setInt(4, book.getYear());
+            ps.setInt(4, book.getPubYear());
             ps.setInt(5, book.getCopiesTotal());
             ps.setInt(6, book.getCopiesAvailable());
             ps.executeUpdate();
@@ -57,7 +57,7 @@ public class JdbcBookRepository implements BookRepository {
             ps.setString(1, book.getIsbn());
             ps.setString(2, book.getTitle());
             ps.setString(3, book.getAuthor());
-            ps.setInt(4, book.getYear());
+            ps.setInt(4, book.getPubYear());
             ps.setInt(5, book.getCopiesTotal());
             ps.setInt(6, book.getCopiesAvailable());
             ps.setLong(7, book.getId());

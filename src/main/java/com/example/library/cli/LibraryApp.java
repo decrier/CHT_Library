@@ -66,7 +66,7 @@ public class LibraryApp {
         }
         for (Book b:  books) {
             System.out.printf("#%d | %s | %s | %s | %d | total=%d avail=%d%n",
-                    b.getId(), b.getIsbn(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCopiesTotal(), b.getCopiesAvailable());
+                    b.getId(), b.getIsbn(), b.getTitle(), b.getAuthor(), b.getPubYear(), b.getCopiesTotal(), b.getCopiesAvailable());
         }
     }
 
@@ -80,7 +80,7 @@ public class LibraryApp {
 
             var b = service.addBook(isbn, title, author, year, copies);
             System.out.printf("✅ Добавлена книга #%d: %s - %s (%d), total=%d avail=%d%n",
-                    b.getId(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCopiesTotal(), b.getCopiesAvailable());
+                    b.getId(), b.getTitle(), b.getAuthor(), b.getPubYear(), b.getCopiesTotal(), b.getCopiesAvailable());
         } catch (IllegalArgumentException e) {
             System.out.println("❌ Ошибка: " + e.getMessage());
         }

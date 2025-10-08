@@ -8,15 +8,15 @@ public class Book {
     private final String isbn;
     private String title;
     private String author;
-    private int year;
+    private int pubYear;
     private int copiesTotal;
     private int copiesAvailable;
 
-    public Book(String isbn, String title, String author, int year, int copiesTotal) {
+    public Book(String isbn, String title, String author, int pubYear, int copiesTotal) {
         this.isbn = req(isbn, "isbn");
         this.title = req(title, "title");
         this.author = req(author, "author");
-        setYear(year);
+        setPubYear(pubYear);
         setCopiesTotal(copiesTotal);
         this.copiesAvailable = copiesTotal;
     }
@@ -54,13 +54,14 @@ public class Book {
         this.author = req(author, "author");
     }
 
-    public int getYear() {
-        return year;
+    public int getPubYear() {
+        return pubYear;
     }
 
-    public void setYear(int year) {
+    public void setPubYear(int pubYear) {
         int max = java.time.Year.now().getValue() + 1;
-        if (year < 1450 || year > max) throw new IllegalArgumentException("year out of range");
+        if (pubYear < 1450 || pubYear > max) throw new IllegalArgumentException("year out of range");
+        this.pubYear = pubYear;
     }
 
     public int getCopiesTotal() {
