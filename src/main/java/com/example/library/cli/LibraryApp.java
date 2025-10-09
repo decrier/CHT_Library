@@ -1,15 +1,20 @@
 package com.example.library.cli;
 
+import com.example.library.db.Schema;
 import com.example.library.repo.InMemoryBookRepository;
+import com.example.library.repo.JdbcBookRepository;
 import com.example.library.service.CatalogService;
 import com.example.library.model.Book;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class LibraryApp {
-    public static void main(String[] args) {
-        var repo = new InMemoryBookRepository();
+    public static void main(String[] args) throws SQLException {
+        Schema.init();
+
+        var repo = new JdbcBookRepository();
         var service = new CatalogService(repo);
         var in = new Scanner(System.in);
 

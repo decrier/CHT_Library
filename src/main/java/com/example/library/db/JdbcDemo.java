@@ -1,34 +1,36 @@
 package com.example.library.db;
 
-import java.sql.*;
+import com.example.library.model.Book;
+import com.example.library.model.User;
+import com.example.library.repo.*;
+import com.example.library.model.Loan;
+
+import java.time.LocalDate;
 
 public class JdbcDemo {
-    public static void main(String[] args) throws SQLException {
-        String url = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";
-        String user = "sa";
-        String pass = "";
+    public static void main(String[] args) throws Exception {
+        Schema.init();
 
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
-             Statement st = conn.createStatement()) {
+        // репозитории
+        var books = new JdbcBookRepository();
+        var users = new JdbcUserRepository();
+        var loans = new JdbcLoanRepository();
 
-            // создаем таблицу
-            st.executeUpdate("CREATE TABLE books (id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
-                    "isbn VARCHAR(50) UNIQUE, title VARCHAR(200), author VARCHAR(200))");
+        // тестовые данные
+        var b = books.save(new Book("111", "Clean Code", "RCM", 2008, 2));
+        var u = users.save(new User("Ivan", "ivan@example.com"));
 
-            // вставляем запись
-            st.executeUpdate("INSERT INTO books (isbn, title, author) VALUES " +
-                    "('111', 'Clean Code', 'Robert Martin')");
+        // создаём выдачу
+        var l = new Loan(b.getId(), u.getId(), LocalDate.now(), LocalDate.now().plusDays(14));
+        loans.save(l);
+        System.out.println("Loan id=" + l.getId());
 
-            // читаем и выводим
-            try (ResultSet rs = st.executeQuery("SELECT id, isbn, title, author FROM books")){
-                while (rs.next()) {
-                    System.out.printf("Book #%d: %s - %s (%s)%n",
-                            rs.getLong("id"),
-                            rs.getString("title"),
-                            rs.getString("author"),
-                            rs.getString("isbn"));
-                }
-            }
-        }
+        // проверяем открытые выдачи
+        System.out.println("Open? " + loans.findOpenByUserAndBook(u.getId(), b.getId()).isPresent());
+
+        // закрываем
+        l.setReturnDate(LocalDate.now().plusDays(7));
+        loans.save(l);
+        System.out.println("Open after return? " + loans.findOpenByUserAndBook(u.getId(), b.getId()).isEmpty());
     }
 }

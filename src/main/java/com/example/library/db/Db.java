@@ -1,16 +1,17 @@
 package com.example.library.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 public class Db {
 
-    private static final String URL  = "jdbc:h2:mem:library;DB_CLOSE_DELAY=-1";
-    private static final String USER = "sa";
-    private static final String PASS = "";
+    private static final HikariDataSource DS;
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASS);
+    static {
+        HikariConfig cfg = new HikariConfig();
+        cfg.setJdbcUrl("jdbc:postgresql://localhost:5432/library");
+        cfg.setUsername("postgres");
+        cfg.setPassword("postgres");
     }
 }
