@@ -22,7 +22,7 @@ public class JdbcLoanRepository implements LoanRepository{
                 INSERT INTO loans (book_id, user_id, loan_date, due_date, return_date)
                 VALUES (?,?,?,?,?)
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 
             ps.setLong(1, loan.getBookId());
@@ -48,7 +48,7 @@ public class JdbcLoanRepository implements LoanRepository{
                 SET book_id=?, user_id=?, loan_date=?, due_date=?, return_date=?
                 WHERE id=?
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
 
             ps.setLong(1, loan.getBookId());
@@ -73,7 +73,7 @@ public class JdbcLoanRepository implements LoanRepository{
                 SELECT id, book_id, user_id, loan_date, due_date, return_date
                 FROM loans WHERE id=?
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setLong(1, id);
 
@@ -90,7 +90,7 @@ public class JdbcLoanRepository implements LoanRepository{
         final String sql = """
                 SELECT id, book_id, user_id, loan_date, due_date, return_date FROM loans
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
             List<Loan> found = new ArrayList<>();
             ResultSet rs = ps.executeQuery();
@@ -108,7 +108,7 @@ public class JdbcLoanRepository implements LoanRepository{
                 SELECT id, book_id, user_id, loan_date, due_date, return_date 
                 FROM loans WHERE user_id=? ORDER BY id
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, userId);
@@ -131,7 +131,7 @@ public class JdbcLoanRepository implements LoanRepository{
                 SELECT id, book_id, user_id, loan_date, due_date, return_date 
                 FROM loans WHERE book_id=? ORDER BY id
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, bookId);
@@ -153,7 +153,7 @@ public class JdbcLoanRepository implements LoanRepository{
                 SELECT id, book_id, user_id, loan_date, due_date, return_date 
                 FROM loans WHERE book_id=? AND user_id=? AND return_date is NULL LIMIT 1
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, bookId);
@@ -169,7 +169,7 @@ public class JdbcLoanRepository implements LoanRepository{
     @Override
     public boolean deleteById(long id) {
         final String sql = "DELETE FROM loans WHERE id=?";
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, id);

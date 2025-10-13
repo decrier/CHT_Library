@@ -21,7 +21,7 @@ public class JdbcBookRepository implements BookRepository {
                 INSERT INTO books (isbn, title, author, pub_year, copies_total, copies_avail)
                 VALUES (?,?,?,?,?,?)
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 
             ps.setString(1, book.getIsbn());
@@ -51,7 +51,7 @@ public class JdbcBookRepository implements BookRepository {
                 SET isbn=?, title=?, author=?, pub_year=?, copies_total=?, copies_avail=?
                 WHERE id=?
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
 
             ps.setString(1, book.getIsbn());
@@ -81,7 +81,7 @@ public class JdbcBookRepository implements BookRepository {
                 FROM books
                 WHERE id=?
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
 
             ps.setLong(1, id);
@@ -100,7 +100,7 @@ public class JdbcBookRepository implements BookRepository {
                 FROM books
                 WHERE isbn=?
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
 
             ps.setString(1, isbn);
@@ -117,7 +117,7 @@ public class JdbcBookRepository implements BookRepository {
                 DELETE FROM books
                 WHERE id =?
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
 
             ps.setLong(1, id);
@@ -133,7 +133,7 @@ public class JdbcBookRepository implements BookRepository {
                 FROM books
                 ORDER BY id
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()){
 

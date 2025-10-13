@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 public class Schema {
     public static void init() throws SQLException {
-        try (Connection c = Db.getConnection(); Statement st = c.createStatement()) {
+        try (Connection c = Db.getDataSource().getConnection(); Statement st = c.createStatement()) {
 //            st.executeUpdate("DROP TABLE IF EXISTS books");
             // простая схема для Book (минимально нужная для наших методов)
             st.executeUpdate("""

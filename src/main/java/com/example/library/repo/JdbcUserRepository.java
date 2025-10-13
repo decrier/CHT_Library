@@ -21,7 +21,7 @@ public class JdbcUserRepository implements UserRepository{
                 INSERT INTO users (full_name, email)
                 VALUES (?,?)
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 
             ps.setString(1, user.getName());
@@ -45,7 +45,7 @@ public class JdbcUserRepository implements UserRepository{
                 SET full_name=?, email=?
                 WHERE id=?
                 """;
-        try(Connection conn = Db.getConnection();
+        try(Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, user.getName());
@@ -68,7 +68,7 @@ public class JdbcUserRepository implements UserRepository{
                 SELECT id, full_name, email FROM users
                 ORDER BY id
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()){
             List<User> list = new ArrayList<>();
@@ -87,7 +87,7 @@ public class JdbcUserRepository implements UserRepository{
                 SELECT id, full_name, email FROM users
                 WHERE id=?
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
 
             ps.setLong(1, id);
@@ -105,7 +105,7 @@ public class JdbcUserRepository implements UserRepository{
                 SELECT id, full_name, email FROM users
                 WHERE email=?
                 """;
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
 
             ps.setString(1, email.toLowerCase());
@@ -120,7 +120,7 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public boolean deleteById(long id) {
         final String sql = "DELETE FROM users WHERE id=?";
-        try (Connection conn = Db.getConnection();
+        try (Connection conn = Db.getDataSource().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, id);
