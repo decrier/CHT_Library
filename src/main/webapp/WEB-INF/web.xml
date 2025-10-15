@@ -1,5 +1,4 @@
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee" version="6.0">
-    <!-- JSF Faces Servlet -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
@@ -9,4 +8,13 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+
+    <!-- CDI для Tomcat -->
+<!--    <listener>-->
+<!--        <listener-class>org.jboss.weld.environment.servlet.EnhancedListener</listener-class>-->
+<!--    </listener>-->
+
+    <welcome-file-list>
+        <welcome-file>books.xhtml</welcome-file>
+    </welcome-file-list>
 </web-app>

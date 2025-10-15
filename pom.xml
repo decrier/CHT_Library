@@ -17,7 +17,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>5.13.4</version>
             <scope>test</scope>
         </dependency>
 
@@ -65,10 +65,11 @@
             <version>4.1.2</version>
         </dependency>
 
+        <!-- CDI (Weld) для Tomcat 11 -->
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet-core</artifactId>
-            <version>5.1.2.Final</version>
+            <version>6.0.0.Final</version>
         </dependency>
 
         <dependency>
@@ -78,8 +79,25 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>9.0.1.Final</version>
+        </dependency>
+
+        <!-- ВАЖНО: CDI-EL API 4.1 — даёт ELAwareBeanManager -->
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-el-api</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <packaging>war</packaging>
+
+    <build>
+        <finalName>library</finalName>
+    </build>
 
 </project>

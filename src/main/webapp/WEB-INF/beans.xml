@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="https://jakarta.ee/xml/ns/jakartaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                           https://jakarta.ee/xml/ns/jakartaee/beans_4_0.xsd"
+       version="4.0"
+       bean-discovery-mode="annotated">
+
+    <!--
+        Этот файл сообщает контейнеру CDI (Weld),
+        что нужно активировать CDI и сканировать классы с аннотациями
+        @Named, @Inject, @RequestScoped, @SessionScoped и т.д.
+
+        bean-discovery-mode:
+          - none — CDI отключен полностью;
+          - annotated — только классы с CDI-аннотациями;
+          - all — все классы становятся бинами (старый режим).
+    -->
+
+    <!--
+        Здесь можно указывать дополнительные настройки CDI, например:
+        <alternatives>, <decorators>, <interceptors>
+        (пока не нужно, поэтому оставляем пустым)
+    -->
+
+</beans>
