@@ -7,6 +7,9 @@
 </h:head>
 
 <h:body>
+    <h:link outcome="books_add" value="Add book" />
+    <br/><br/>
+
     <h1>Books</h1>
 
     <h:dataTable value="#{bookBean.books}" var="b" rendered="#{not empty bookBean.books}">

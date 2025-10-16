@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+<h:head>
+    <title>Add book</title>
+</h:head>
+
+<h:body>
+    <h1>Add book</h1>
+
+    <!-- общий блок сообщений (валидация/бизнес-ошибки) -->
+    <h:messages globalOnly="true" />
+
+    <h:form>
+        <h:panelGrid columns="2" columnClasses="lbl,val" cellpadding="5">
+
+            <h:outputLabel for="isbn" value="ISBN:" />
+            <h:inputText id="isbn" value="#{addBookBean.isbn}"
+                         required="true" requiredMessage="ISBN is required" />
+
+            <h:outputLabel for="title" value="Title:" />
+            <h:inputText id="title" value="#{addBookBean.title}"
+                         required="true" requiredMessage="Title is required" />
+
+            <h:outputLabel for="author" value="Author:" />
+            <h:inputText id="author" value="#{addBookBean.author}"
+                         required="true" requiredMessage="Author is required" />
+
+            <h:outputLabel for="pubYear" value="Year:" />
+            <h:inputText id="pubYear" value="#{addBookBean.pubYear}" required="true">
+                <f:validateLongRange minimun="1400" maximum="2100" />
+            </h:inputText>
+
+            <h:outputLabel for="copiesTotal" value="Copies total:" />
+            <h:inputText id="copiesTotal" value="#{addBookBean.copiesTotal}" required="true">
+                <f:validateLongRange minimum="1" maximum="1000" />
+            </h:inputText>
+        </h:panelGrid>
+
+        <h:commandButton value="Add" action="#{addBookBean.addBook}" />
+        &#160;
+        <h:link outcome="books" value="Back to list" />
+    </h:form>
+</h:body>
+</html>
