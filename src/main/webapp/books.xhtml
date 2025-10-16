@@ -31,6 +31,9 @@
                                  action="#{bookBean.delete(b.id)}"
                                  onclick="return confirm('Delete this book?');"/>
             </h:form>
+            <h:link outcome="book_edit" value="Edit">
+                <f:param name="id" value="#{b.id}"/>
+            </h:link>
         </h:column>
     </h:dataTable>
 

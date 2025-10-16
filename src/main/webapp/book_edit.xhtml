@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+<h:head>
+    <title>Edit Book</title>
+</h:head>
+<h:body>
+
+    <f:metadata>
+        <!-- Привязываем параметр id к бину -->
+        <f:viewParam name="id" value="#{editBookBean.id}" />
+        <!-- Перед рендером вызываем init() для загрузки книги -->
+        <f:event type="preRenderView" listener="#{editBookBean.init}" />
+    </f:metadata>
+
+    <h1>Edit Book</h1>
+
+    <h:messages globalOnly="true" style="color:crimson; font-weight:bold;"/>
+
+    <h:panelGroup rendered="#{editBookBean.notFound}">
+        <p>Book not found (id=#{editBookBean.id}).</p>
+        <h:link outcome="books" value="Back to list"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not editBookBean.notFound}">
+        <h:form>
+            <h:panelGrid columns="2" columnClasses="lbl,val" cellpadding="5">
+
+                <h:outputLabel value="ID:"/>
+                <h:outputText value="#{editBookBean.book.id}"/>
+
+                <h:outputLabel value="ISBN:"/>
+                <h:outputLabel value="#{editBookBean.book.isbn}"/>
+
+                <h:outputLabel for="title" value="Title:"/>
+                <h:inputText id="title" value="#{editBookBean.book.title}" required="true"/>
+
+                <h:outputLabel for="author" value="Author:"/>
+                <h:inputText id="author" value="#{editBookBean.book.author}" required="true"/>
+
+                <h:outputLabel for="year" value="Year:"/>
+                <h:inputText id="year" value="#{editBookBean.book.pubYear}" required="true">
+                    <f:validateLongRange minimum="1400" maximum="2100"/>
+                </h:inputText>
+
+                <h:outputLabel for="total" value="Copies total:"/>
+                <h:inputText id="total" value="#{editBookBean.book.copiesTotal}" required="true">
+                    <f:validateLongRange minimum="1" maximum="1000"/>
+                </h:inputText>
+
+                <h:outputLabel value="Available:"/>
+                <h:outputText value="#{editBookBean.book.copiesAvailable}/#{editBookBean.book.copiesTotal}"/>
+            </h:panelGrid>
+
+            <h:commandButton value="Save" action="#{editBookBean.save}"/>
+            &#160;
+            <h:link outcome="books" value="Cancel"/>
+        </h:form>
+    </h:panelGroup>
+
+</h:body>
+</html>
