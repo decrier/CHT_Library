@@ -24,4 +24,6 @@ public interface BookRepository {
 
     /** Удаление по id. Возвращает true, если запись существовала и была удалена */
     boolean deleteById(long id);
-}
+
+    List<Book> search(String q);
+ }

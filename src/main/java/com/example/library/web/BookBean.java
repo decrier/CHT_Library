@@ -9,6 +9,8 @@ import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Named("bookBean")
 @RequestScoped
@@ -16,8 +18,22 @@ public class BookBean {
 
     private final BookRepository repo = new JdbcBookRepository();
 
+    // текст фильтра
+    private String q;
+
+    // Кнопка "Search" — достаточно вернуть null (остаться на странице)
+    public String search() {
+        return null;
+    }
+
+    // Кнопка "Clear"
+    public String clear() {
+        q = null;
+        return null;
+    }
+
     public List<Book> getBooks() {
-        return repo.findAll();
+        return repo.search(q);
     }
 
     public String delete(long id) {
@@ -40,5 +56,13 @@ public class BookBean {
                     FacesMessage.SEVERITY_ERROR, "DB error on delete: " + e.getMessage(), null));
             return null; // остаёмся на странице, сообщение уже показано
         }
+    }
+
+    public String getQ() {
+        return q;
+    }
+
+    public void setQ(String q) {
+        this.q = q;
     }
 }

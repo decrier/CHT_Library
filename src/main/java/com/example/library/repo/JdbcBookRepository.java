@@ -6,6 +6,7 @@ import com.example.library.model.Book;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public class JdbcBookRepository implements BookRepository {
@@ -112,6 +113,7 @@ public class JdbcBookRepository implements BookRepository {
         }
     }
 
+    @Override
     public boolean deleteById(long id) {
         final String sql = """
                 DELETE FROM books
@@ -127,6 +129,7 @@ public class JdbcBookRepository implements BookRepository {
         }
     }
 
+    @Override
     public List<Book> findAll() {
         final String sql = """
                 SELECT id, isbn, title, author, pub_year, copies_total, copies_avail
@@ -144,6 +147,40 @@ public class JdbcBookRepository implements BookRepository {
             return out;
         } catch (SQLException e) {
             throw new RuntimeException("DB error on findAll", e);
+        }
+    }
+
+    @Override
+    public List<Book> search(String q) {
+        if (q == null || q.isBlank()) {
+            return findAll();
+        }
+        String needle = "%" + q.toLowerCase(Locale.ROOT) + "%";
+
+        final String sql = """
+                SELECT id, isbn, title, author, pub_year, copies_total, copies_avail
+                FROM books
+                WHERE LOWER(isbn) LIKE ?
+                    OR LOWER(title) LIKE ?
+                    OR LOWER(author) LIKE ?
+                ORDER BY id
+                """;
+        try(Connection conn = Db.getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, needle);
+            ps.setString(2, needle);
+            ps.setString(3, needle);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Book> out = new ArrayList<>();
+                while (rs.next()) {
+                    out.add(map(rs));
+                }
+                return out;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("DB error on search", e);
         }
     }
 

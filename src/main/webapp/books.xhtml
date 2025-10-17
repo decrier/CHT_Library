@@ -17,6 +17,20 @@
 
     <h1>Books</h1>
 
+    <h:form>
+        <h:panelGrid columns="3" cellpadding="5">
+            <h:outputLabel for="q" value="Search:"/>
+            <h:inputText id="q" value="#{bookBean.q}" />
+            <h:panelGroup>
+                <h:commandButton value="Search" action="#{bookBean.search}" />
+                &#160;
+                <h:commandButton value="Clear" action="#{bookBean.clear}" />
+            </h:panelGroup>
+        </h:panelGrid>
+    </h:form>
+
+    <br/>
+
     <h:dataTable value="#{bookBean.books}" var="b" rendered="#{not empty bookBean.books}">
         <h:column><f:facet name="header">ID</f:facet>#{b.id}</h:column>
         <h:column><f:facet name="header">ISBN</f:facet>#{b.isbn}</h:column>
