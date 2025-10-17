@@ -191,4 +191,9 @@ public class JdbcLoanRepository implements LoanRepository{
         loan.setReturnDate(returnDate);
         return loan;
     }
+
+    @Override
+    public List<Loan> findActive() {
+        return findAll().stream().filter(l -> l.getReturnDate() == null).toList();
+    }
 }

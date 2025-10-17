@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+<h:head>
+    <title>Loans</title>
+</h:head>
+
+<h:body>
+
+    <h:messages globalOnly="true"
+                style="color: green; font-weight: bold; list-style: none; margin-bottom: 1em;"
+                layout="table"/>
+
+    <h:link outcome="/loan_issue.xhtml" value="Issue loan" />
+    &#160;|&#160;
+    <h:link outcome="/books.xhtml" value="Books" />
+    &#160;|&#160;
+    <h:link outcome="/users.xhtml" value="Users" />
+    <br/><br/>
+
+    <h1>Active Loans</h1>
+    <h:dataTable value="#{loanBean.activeLoans}" var="r" rendered="#{not empty loanBean.activeLoans}">
+        <h:column><f:facet name="header">ID</f:facet>#{r.id}</h:column>
+        <h:column><f:facet name="header">User</f:facet>#{r.userName}</h:column>
+        <h:column><f:facet name="header">Book</f:facet>#{r.bookTitle}</h:column>
+        <h:column><f:facet name="header">Loan Date</f:facet>#{r.loanDate}</h:column>
+        <h:column><f:facet name="header">Due Date</f:facet>#{r.dueDate}</h:column>
+        <h:column>
+            <f:facet name="header">Actions</f:facet>
+            <h:form>
+                <h:commandButton value="Return"
+                                 action="#{loanBean.returnLoan(r.id)}"
+                                 onclick="return confirm('Mark as returned?');"/>
+            </h:form>
+        </h:column>
+    </h:dataTable>
+
+    <h:panelGroup rendered="#{empty loanBean.activeLoans}">
+        <p>(no active loans)</p>
+    </h:panelGroup>
+</h:body>
+</html>

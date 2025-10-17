@@ -33,4 +33,6 @@ public interface LoanRepository {
 
     /** удаление по id. true, если запись существовала и удалена */
     boolean deleteById(long id);
+
+    List<Loan> findActive();
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+<h:head><title>Issue Loan</title></h:head>
+<h:body>
+
+    <h1>Issue Loan</h1>
+    <h:messages globalOnly="true" style="color:crimson; font-weight:bold;"/>
+
+    <h:form>
+        <h:panelGrid columns="2" cellpadding="5">
+            <h:outputLabel for="user" value="User:" />
+            <h:selectOneMenu id="user" value="#{issueLoanBean.userId}" required="true">
+                <f:selectItem itemLabel="-- select user --" itemValue="#{null}" noSelectionOption="true" />
+                <f:selectItems value="#{issueLoanBean.users}" var="u"
+                               itemValue="#{u.id}" itemLabel="#{u.name} #{u.email}" />
+            </h:selectOneMenu>
+
+            <h:outputLabel for="book" value="Book:" />
+            <h:selectOneMenu id="book" value="#{issueLoanBean.bookId}" required="true">
+                <f:selectItem itemLabel="-- select book --" itemValue="#{null}" noSelectionOption="true" />
+                <f:selectItems value="#{issueLoanBean.availableBooks}" var="b"
+                               itemValue="#{b.id}" itemLabel="#{b.author} - #{u.title} [#{b.copiesAvailable}/#{b.copiesTotal}]" />
+            </h:selectOneMenu>
+
+            <h:outputLabel for="due" value="Due date: " />
+            <h:outputText id="due" value="#{issueLoanBean.dueDate}" required="true">
+                <f:convertDateTime type="localDate" pattern="yyyy-MM-dd" />
+            </h:outputText>
+            <!-- Подсказка по формату -->
+            <h:outputText value="yyyy-MM-dd" />
+        </h:panelGrid>
+
+        <h:commandButton value="Issue" action="#{issueLoanBean.issue}" />
+        &#160;
+        <h:link outcome="/loans.xhtml" value="Back to loans" />
+    </h:form>
+
+</h:body>
+</html>
