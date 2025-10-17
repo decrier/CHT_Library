@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+<h:head><title>Add User</title></h:head>
+<h:body>
+
+    <h1>Add User</h1>
+
+    <h:messages globalOnly="true" style="color:crimson; font-weight:bold;"/>
+
+    <h:form>
+        <h:panelGrid columns="2" cellpadding="5">
+            <h:outputLabel for="name" value="Name:" />
+            <h:inputText id="name" value="#{addUserBean.name}" requred="true"/>
+
+            <h:outputLabel for="email" value="Email:" />
+            <h:inputText id="email" value="#{addUserBean.email}" requred="true"/>
+        </h:panelGrid>
+
+        <h:commandButton value="Add" action="#{addUserBean.add}" />
+        &#160;
+        <h:link outcome="/users.xhtml" value="Back to list" />
+    </h:form>
+
+</h:body>
+</html>
