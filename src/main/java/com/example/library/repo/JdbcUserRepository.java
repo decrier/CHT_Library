@@ -1,9 +1,11 @@
 package com.example.library.repo;
 
 import com.example.library.db.Db;
+import com.example.library.model.Role;
 import com.example.library.model.User;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,14 +20,17 @@ public class JdbcUserRepository implements UserRepository{
 
     private User insert(User user){
         final String sql = """
-                INSERT INTO users (full_name, email)
-                VALUES (?,?)
+                INSERT INTO users (full_name, email, role, membership_date, active)
+                VALUES (?,?,?,?,?)
                 """;
         try (Connection conn = Db.getDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
+            ps.setString(3, user.getRole().name().toLowerCase());
+            ps.setDate(4, Date.valueOf(user.getMembershipDate()));
+            ps.setBoolean(5, user.isActive());
             ps.executeUpdate();
 
             try (ResultSet keys = ps.getGeneratedKeys()){
@@ -35,6 +40,10 @@ public class JdbcUserRepository implements UserRepository{
         } catch (SQLIntegrityConstraintViolationException e) {
             throw new IllegalArgumentException("email already exists: " + user.getEmail());
         } catch (SQLException e) {
+            // PostgreSQL кидает PSQLException c SQLState 23505 при unique violation
+            if ("23505".equals(e.getSQLState())) {
+                throw new IllegalArgumentException("email already exists: " + user.getEmail());
+            }
             throw new RuntimeException("DB error on insert user", e);
         }
     }
@@ -42,7 +51,7 @@ public class JdbcUserRepository implements UserRepository{
     private User update(User user) {
         final String sql = """
                 UPDATE users
-                SET full_name=?, email=?
+                SET full_name=?, email=?, role=?, membership_dae=?, active=?
                 WHERE id=?
                 """;
         try(Connection conn = Db.getDataSource().getConnection();
@@ -50,7 +59,10 @@ public class JdbcUserRepository implements UserRepository{
 
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
-            ps.setLong(3, user.getId());
+            ps.setString(3, user.getRole().name().toLowerCase());
+            ps.setDate(4, Date.valueOf(user.getMembershipDate()));
+            ps.setBoolean(5, user.isActive());
+            ps.setLong(6, user.getId());
 
             int updated = ps.executeUpdate();
             if (updated == 0){
@@ -65,7 +77,8 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public List<User> findAll() {
         final String sql = """
-                SELECT id, full_name, email FROM users
+                SELECT id, full_name, email, role, membership_date, active 
+                FROM users
                 ORDER BY id
                 """;
         try (Connection conn = Db.getDataSource().getConnection();
@@ -84,7 +97,8 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public Optional<User> findById(long id) {
         final String sql = """
-                SELECT id, full_name, email FROM users
+                SELECT id, full_name, email, role, membership_date, active 
+                FROM users
                 WHERE id=?
                 """;
         try (Connection conn = Db.getDataSource().getConnection();
@@ -102,7 +116,8 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public Optional<User> findByEmail(String email) {
         final String sql = """
-                SELECT id, full_name, email FROM users
+                SELECT id, full_name, email, role, membership_date, active 
+                FROM users
                 WHERE email=?
                 """;
         try (Connection conn = Db.getDataSource().getConnection();
@@ -136,6 +151,20 @@ public class JdbcUserRepository implements UserRepository{
                 rs.getString("email")
         );
         user.setId(rs.getLong("id"));
+
+        String roleStr = rs.getString("role");
+        if (roleStr != null) {
+            user.setRole(Role.valueOf(roleStr.toUpperCase()));
+        }
+
+        Date membershipDate = rs.getDate("membership_date");
+        if (membershipDate != null) {
+            user.setMembershipDate(membershipDate.toLocalDate());
+        } else {
+            user.setMembershipDate(LocalDate.now());
+        }
+
+        user.setActive(rs.getBoolean("active"));
         return user;
     }
 }

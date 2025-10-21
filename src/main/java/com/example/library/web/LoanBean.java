@@ -82,7 +82,7 @@ public class LoanBean {
             Row r = new Row();
             r.setId(l.getId());
             r.setLoanDate(l.getLoanDate());
-            r.setLoanDate(l.getDueDate());
+            r.setDueDate(l.getDueDate());
 
             User u = users.get(l.getUserId());
             Book b = books.get(l.getBookId());
