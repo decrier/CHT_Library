@@ -6,11 +6,13 @@ import java.util.Objects;
 public class Loan {
 
     private Long id;
-    private final Long bookId;
-    private final Long userId;
-    private final LocalDate loanDate; // дата выдачи
+    private Long bookId;
+    private Long userId;
+    private LocalDate loanDate; // дата выдачи
     private LocalDate dueDate; // срок возврата
     private LocalDate returnDate; // дата фактического возврата
+
+    public Loan(){}
 
     public Loan(Long bookId, Long userId, LocalDate loanDate, LocalDate dueDate) {
         if (bookId == null) throw new IllegalArgumentException("bookId must not be null");

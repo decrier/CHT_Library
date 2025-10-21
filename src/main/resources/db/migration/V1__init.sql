@@ -9,6 +9,14 @@ CREATE TABLE IF NOT EXISTS books (
   copies_avail INT NOT NULL
 );
 
+--INSERT INTO books (isbn, title, author, pub_year, copies_total, copies_avail)
+--VALUES
+--    ('1-111', 'War and Peace', 'Leo Tolstoy', 1867, 10, 10),
+--    ('1-112', 'Crime and Punishment', 'Theodor Dostoevski', 1866, 8, 8),
+--    ('1-113', 'Red and White', 'Stendhal', 1830, 4, 4),
+--    ('1-114', 'Chuk and Gek', 'Arkadiy Gaydar', 1939, 1, 1)
+--    ON CONFLICT (title) DO NOTHING;
+
 -- users
 CREATE TABLE IF NOT EXISTS users (
   id BIGSERIAL PRIMARY KEY,
@@ -16,6 +24,13 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(200) NOT NULL UNIQUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+--INSERT INTO users (full_name, email)
+--VALUES
+--    ('Tom Hanks', 'hanks@mail.com'),
+--    ('Tom Cruise', 'cruise@mail.net'),
+--    ('Tom Hardy', 'hardy@gmail.org'),
+--    ON CONFLICT (full_name) DO NOTHING;
 
 -- loans
 CREATE TABLE IF NOT EXISTS loans (

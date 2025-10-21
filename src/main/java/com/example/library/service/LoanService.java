@@ -1,5 +1,7 @@
 package com.example.library.service;
 
+import com.example.library.exception.ActiveLoanExistsException;
+import com.example.library.exception.NoCopiesAvailableException;
 import com.example.library.model.Book;
 import com.example.library.model.Loan;
 import com.example.library.model.User;
@@ -29,10 +31,10 @@ public class LoanService {
                 .orElseThrow(() -> new IllegalArgumentException("book not found: " + bookId));
 
         if (book.getCopiesAvailable() <= 0) {
-            throw new IllegalArgumentException("no copies available for book id=" + bookId);
+            throw new NoCopiesAvailableException(bookId);
         }
         if (loanRepo.findOpenByUserAndBook(user.getId(), book.getId()).isPresent()) {
-            throw new IllegalArgumentException("user already has an aopen loan for this book");
+            throw new ActiveLoanExistsException(userId, bookId);
         }
 
         Loan loan = new Loan(book.getId(), user.getId(), loanDate, dueDate);
