@@ -2,6 +2,7 @@ package com.example.library.service;
 
 import com.example.library.db.Db;
 import com.example.library.db.Migrations;
+import com.example.library.exception.NoCopiesAvailableException;
 import com.example.library.model.Book;
 import com.example.library.model.Loan;
 import com.example.library.model.User;
@@ -65,7 +66,7 @@ public class LoanServiceTest {
         loanService.issueLoan(userId, bookId, today(), today().plusDays(7));
 
         // Повторная — ожидаем IllegalArgumentException (или твое бизнес-исключение)
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(NoCopiesAvailableException.class, () ->
                         loanService.issueLoan(userId, bookId, today(), today().plusDays(7)),
                 "Повторная активная выдача той же книги тому же пользователю должна быть запрещена");
 
