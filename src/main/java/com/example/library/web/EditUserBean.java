@@ -66,11 +66,11 @@ public class EditUserBean {
         ec.getFlash().put("msg", msg);
     }
 
-    public UserRepository getUserRepo() {
-        return userRepo;
-    }
-
     public User getUser() {
         return user;
+    }
+
+    public List<SelectItem> getRoles() {
+        return roles;
     }
 }

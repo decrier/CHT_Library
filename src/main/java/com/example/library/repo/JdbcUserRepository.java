@@ -51,7 +51,7 @@ public class JdbcUserRepository implements UserRepository{
     private User update(User user) {
         final String sql = """
                 UPDATE users
-                SET full_name=?, email=?, role=?, membership_dae=?, active=?
+                SET full_name=?, email=?, role=?, membership_date=?, active=?
                 WHERE id=?
                 """;
         try(Connection conn = Db.getDataSource().getConnection();
@@ -141,9 +141,15 @@ public class JdbcUserRepository implements UserRepository{
             ps.setLong(1, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
+            // 23503 — FK violation (есть ссылки в loans)
+            if ("23503".equals(e.getSQLState())) {
+                throw new IllegalStateException("Нельзя удалить пользователя: по нему есть записи в loans");
+            }
             throw new RuntimeException("DB error on deleteById", e);
         }
     }
+
+    /** Мягкое удаление: active=false */
 
     private User map(ResultSet rs) throws SQLException {
         User user = new User(

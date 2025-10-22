@@ -10,6 +10,8 @@
 
     <h:link outcome="/users_add.xhtml" value="Add user"/>
     &#160;|&#160;
+    <h:link outcome="user_edit.xhtml" value="Edit user" />
+    &#160;|&#160;
     <h:link outcome="books.xhtml" value="Books" />
     &#160;|&#160;
     <h:link outcome="/loans.xhtml" value="Loans" />
@@ -27,6 +29,12 @@
                 <h:commandButton value="Delete" action="#{userBean.delete(u.id)}"
                                  onclick="return confirm('Delete this user?');" />
             </h:form>
+        </h:column>
+        <h:column>
+            <f:facet name="header">Edit</f:facet>
+            <h:link outcome="user_edit.xhtml" value="Edit">
+                <f:param name="id" value="#{u.id}" />
+            </h:link>
         </h:column>
     </h:dataTable>
 
