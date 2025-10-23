@@ -35,4 +35,6 @@ public interface LoanRepository {
     boolean deleteById(long id);
 
     List<Loan> findActive();
+
+    boolean hasActiveLoansByUser (long userId);
 }

@@ -150,6 +150,49 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     /** Мягкое удаление: active=false */
+    public boolean deactivateById(long id) {
+        final String sql = "UPDATE users SET active=false WHERE id=?";
+        try (Connection conn = Db.getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("DB error on deactivateById", e);
+        }
+    }
+
+    /** Обратная операция: active=true */
+    public boolean activateById(long id) {
+        final String sql = "UPDATE users SET active=true WHERE id=?";
+        try (Connection conn = Db.getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("DB error on deactivateById", e);
+        }
+    }
+
+    /** Все пользователи (без фильтра по активности) */
+    public List<User> findAllAnyStatus() {
+        return findAll();
+    }
+
+    /** Только активные пользователи */
+    public List<User> findAllActiveUsers() {
+        List<User> all = findAll();
+        return all.stream()
+                .filter(u -> u.isActive())
+                .toList();
+    }
+
+    /** Только неактивные пользователи */
+    public List<User> findAllInactiveUsers() {
+        List<User> all = findAll();
+        return all.stream()
+                .filter(u -> !u.isActive())
+                .toList();
+    }
 
     private User map(ResultSet rs) throws SQLException {
         User user = new User(

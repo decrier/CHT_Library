@@ -196,4 +196,22 @@ public class JdbcLoanRepository implements LoanRepository{
     public List<Loan> findActive() {
         return findAll().stream().filter(l -> l.getReturnDate() == null).toList();
     }
+
+    @Override
+    public boolean hasActiveLoansByUser(long userId) {
+        final String sql = """
+                SELECT EXISTS (
+                    SELECT 1 FROM loans WHERE user_id = ?
+                )
+                """;
+        try (Connection conn = Db.getDataSource().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setLong(1, userId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("DB error on hasActiveLoansByUser", e);
+        }
+    }
+
+
 }

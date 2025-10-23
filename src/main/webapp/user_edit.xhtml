@@ -11,7 +11,11 @@
 <h:body>
     <h1>User</h1>
 
-    <h:messages globalOnly="true" />
+    <h:form prependId="false">
+
+    <h:inputHidden id="id" value="#{editUserBean.user.id}" />
+
+    <h:messages  />
 
     <h:panelGrid columns="2" columnClasses="lbl,val" styleClass="form-grid">
         <h:outputLabel for="name" value="Full name" />
@@ -20,7 +24,7 @@
         <h:outputLabel for="email" value="Email" />
         <h:inputText id="email" value="#{editUserBean.user.email}" required="true">
             <!-- простая проверка формата -->
-            <f:validateRegex pattern="^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$" />
+            <f:validateRegex pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$" />
         </h:inputText>
 
         <h:outputLabel for="role" value="Role" />
@@ -42,6 +46,8 @@
         <h:commandButton value="Save" action="#{editUserBean.save}" />
         <h:link outcome="users.xhtml" value="Cancel" style="margin-left:8px" />
     </div>
+
+    </h:form>
 </h:body>
 
 </html>

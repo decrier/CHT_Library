@@ -24,4 +24,14 @@ public interface UserRepository {
 
     /** Удаление по id. true — если пользователь существовал и удалён. */
     boolean deleteById(long id);
+
+    public boolean deactivateById(long id);
+
+    public boolean activateById(long id);
+
+    public List<User> findAllAnyStatus();
+
+    public List<User> findAllActiveUsers();
+
+    public List<User> findAllInactiveUsers();
 }
