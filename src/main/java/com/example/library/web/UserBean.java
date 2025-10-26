@@ -28,7 +28,7 @@ public class UserBean {
         reload();
     }
 
-    private void reload() {
+    public void reload() {
         switch (statusFilter) {
             case "ACTIVE" -> items = userRepo.findAllActiveUsers();
             case "INACTIVE" -> items = userRepo.findAllInactiveUsers();
@@ -97,5 +97,17 @@ public class UserBean {
     private void addError(String msg) {
         FacesContext.getCurrentInstance().addMessage( null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
+    }
+
+    public String getStatusFilter() {
+        return statusFilter;
+    }
+
+    public List<User> getItems() {
+        return items;
+    }
+
+    public void setStatusFilter(String statusFilter) {
+        this.statusFilter = statusFilter;
     }
 }

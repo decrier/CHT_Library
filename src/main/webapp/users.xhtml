@@ -6,7 +6,7 @@
 
 <h:body>
 
-    <h:messages globalOnly="true" />
+    <h:messages />
 
     <h:link outcome="/users_add.xhtml" value="Add user"/>
     &#160;|&#160;
@@ -19,27 +19,44 @@
 
     <h1>Users</h1>
 
-    <h:dataTable value="#{userBean.users}" var="u" rendered="#{not empty userBean.users}">
-        <h:column><f:facet name="header">ID</f:facet>#{u.id}</h:column>
+
+    <h:panelGrid columns="3" style="margin-bottom:10px">
+        <h:outputLabel value="Status:" />
+        <h:selectOneMenu value="#{userBean.statusFilter}">
+            <f:selectItem itemValue="ACTIVE" itemLabel="Active" />
+            <f:selectItem itemValue="INACTIVE" itemLabel="Inactive" />
+            <f:selectItem itemValue="ALL" itemLabel="All" />
+        </h:selectOneMenu>
+        <h:commandButton value="Apply" action="#{userBean.reload}" />
+    </h:panelGrid>
+
+    <h:dataTable value="#{userBean.items}" var="u" rendered="#{not empty userBean.items}">
         <h:column><f:facet name="header">Name</f:facet>#{u.name}</h:column>
         <h:column><f:facet name="header">Email</f:facet>#{u.email}</h:column>
+        <h:column><f:facet name="header">Role</f:facet>#{u.role}</h:column>
+        <h:column><f:facet name="header">Active</f:facet>#{u.active}</h:column>
         <h:column>
-            <f:facet name="header">Actions</f:facet>
             <h:form>
-                <h:commandButton value="Delete" action="#{userBean.delete(u.id)}"
-                                 onclick="return confirm('Delete this user?');" />
+            <f:facet name="header">Actions</f:facet>
+            <h:panelGroup rendered="#{u.active}">
+                <h:commandLink value="Deactivate" action="#{userBean.deactivate(u.id)}"
+                                 onclick="return confirm('Deactivate this user?');" />
+            </h:panelGroup>
+            <h:panelGroup rendered="#{!u.active}">
+                <h:commandLink value="Activate" action="#{userBean.activate(u.id)}"
+                               onclick="return confirm('Activate this user?');" />
+            </h:panelGroup>
             </h:form>
-        </h:column>
-        <h:column>
-            <f:facet name="header">Edit</f:facet>
+            &#160;|&#160;
             <h:link outcome="user_edit.xhtml" value="Edit">
                 <f:param name="id" value="#{u.id}" />
             </h:link>
         </h:column>
     </h:dataTable>
 
-    <h:panelGroup rendered="#{empty userBean.users}">
-        <p>No users yet</p>
-    </h:panelGroup>
+        <div style="margin-top:8px">
+            <h:link outcome="user_edit.xhtml" value="New user"/>
+        </div>
+
 </h:body>
 </html>
