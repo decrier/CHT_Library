@@ -57,10 +57,10 @@ public class UserBean {
 
     public String deactivate(long userId) {
         try {
-            if (loanRepo.hasActiveLoansByUser(userId)) {
-                addError("Нельзя деактивировать: у пользователя есть активные выдачи книг");
-                return null;
-            }
+//            if (loanRepo.hasActiveLoansByUser(userId)) {
+//                addError("Нельзя деактивировать: у пользователя есть активные выдачи книг");
+//                return null;
+//            }
             if (userRepo.deactivateById(userId)) {
                 addInfo("Пользователь деактивирован");
                 return "users.xhtml?faces-redirect=true";

@@ -19,7 +19,9 @@
 
     <h1>Users</h1>
 
+    <h:messages id="msgs" />
 
+    <h:form>
     <h:panelGrid columns="3" style="margin-bottom:10px">
         <h:outputLabel value="Status:" />
         <h:selectOneMenu value="#{userBean.statusFilter}">
@@ -29,6 +31,7 @@
         </h:selectOneMenu>
         <h:commandButton value="Apply" action="#{userBean.reload}" />
     </h:panelGrid>
+    </h:form>
 
     <h:dataTable value="#{userBean.items}" var="u" rendered="#{not empty userBean.items}">
         <h:column><f:facet name="header">Name</f:facet>#{u.name}</h:column>
